@@ -1,10 +1,16 @@
 package main
 
-import "github.com/aidos-dev/url-shortener/internal/config"
+import (
+	"fmt"
+
+	"github.com/aidos-dev/url-shortener/internal/config"
+)
 
 func main() {
 	// TODO: init config: cleanenv
 	cfg := config.MustLoad()
+
+	fmt.Println(cfg)
 
 	// TODO: init logger: slog
 
