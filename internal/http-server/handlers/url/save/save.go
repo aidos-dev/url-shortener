@@ -5,6 +5,7 @@ import (
 
 	resp "github.com/aidos-dev/url-shortener/internal/lib/api/response"
 	"github.com/aidos-dev/url-shortener/internal/lib/logger/sl"
+	"github.com/aidos-dev/url-shortener/internal/lib/random"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 	"github.com/go-playground/validator/v10"
@@ -20,6 +21,9 @@ type Response struct {
 	resp.Response
 	Alias string `json:"alias,omitempty"`
 }
+
+// TODO: move to config
+const aliasLength = 6
 
 type URLSaver interface {
 	SaveURL(urlToSave string, alias string) (int64, error)
@@ -55,6 +59,11 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 			render.JSON(w, r, resp.ValidationError(validateErr))
 
 			return
+		}
+
+		alias := req.Alias
+		if alias == "" {
+			alias = random.NewRandomString(aliasLength)
 		}
 	}
 }
