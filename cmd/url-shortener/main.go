@@ -6,6 +6,7 @@ import (
 	mwLogger "github.com/aidos-dev/url-shortener/internal/http-server/middleware/logger"
 
 	"github.com/aidos-dev/url-shortener/internal/config"
+	"github.com/aidos-dev/url-shortener/internal/lib/logger/handlers/slogpretty"
 	"github.com/aidos-dev/url-shortener/internal/lib/logger/sl"
 	"github.com/aidos-dev/url-shortener/internal/storage/sqlite"
 	"github.com/go-chi/chi/v5"
@@ -28,6 +29,7 @@ func main() {
 
 	log.Info("starting url-shortener", slog.String("env", cfg.Env))
 	log.Debug("debug messages are enabled")
+	log.Error("error messages are enabled")
 
 	// init storage: sqlite3
 	storage, err := sqlite.New(cfg.StoragePath)
@@ -56,9 +58,7 @@ func setupLogger(env string) *slog.Logger {
 
 	switch env {
 	case envLocal:
-		log = slog.New(
-			slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
-		)
+		log = setupPrettySlog()
 	case envDev:
 		log = slog.New(
 			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
@@ -70,4 +70,16 @@ func setupLogger(env string) *slog.Logger {
 	}
 
 	return log
+}
+
+func setupPrettySlog() *slog.Logger {
+	opts := slogpretty.PrettyHandlerOptions{
+		SlogOpts: &slog.HandlerOptions{
+			Level: slog.LevelDebug,
+		},
+	}
+
+	handler := opts.NewPrettyHandler(os.Stdout)
+
+	return slog.New(handler)
 }
