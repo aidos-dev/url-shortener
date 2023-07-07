@@ -3,10 +3,13 @@ package main
 import (
 	"os"
 
+	mwLogger "github.com/aidos-dev/url-shortener/internal/http-server/middleware/logger"
+
 	"github.com/aidos-dev/url-shortener/internal/config"
 	"github.com/aidos-dev/url-shortener/internal/lib/logger/sl"
 	"github.com/aidos-dev/url-shortener/internal/storage/sqlite"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"golang.org/x/exp/slog"
 )
 
@@ -37,6 +40,13 @@ func main() {
 
 	// init router: chi, "chi render"
 	router := chi.NewRouter()
+
+	// middleware
+	router.Use(middleware.RequestID)
+	router.Use(middleware.Logger)
+	router.Use(mwLogger.New(log))
+	router.Use(middleware.Recoverer)
+	router.Use(middleware.URLFormat)
 
 	// run server
 }
