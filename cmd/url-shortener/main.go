@@ -6,6 +6,7 @@ import (
 	"github.com/aidos-dev/url-shortener/internal/config"
 	"github.com/aidos-dev/url-shortener/internal/lib/logger/sl"
 	"github.com/aidos-dev/url-shortener/internal/storage/sqlite"
+	"github.com/go-chi/chi/v5"
 	"golang.org/x/exp/slog"
 )
 
@@ -35,6 +36,7 @@ func main() {
 	_ = storage
 
 	// init router: chi, "chi render"
+	router := chi.NewRouter()
 
 	// run server
 }
