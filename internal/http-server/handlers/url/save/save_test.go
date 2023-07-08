@@ -8,9 +8,10 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"url-shortener/internal/http-server/handlers/url/save"
-	"url-shortener/internal/http-server/handlers/url/save/mocks"
-	"url-shortener/internal/lib/logger/handlers/slogdiscard"
+
+	"github.com/aidos-dev/url-shortener/internal/http-server/handlers/url/save"
+	"github.com/aidos-dev/url-shortener/internal/http-server/handlers/url/save/mocks"
+	"github.com/aidos-dev/url-shortener/internal/lib/logger/handlers/slogdiscard"
 
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
