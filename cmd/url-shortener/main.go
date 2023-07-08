@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/aidos-dev/url-shortener/internal/http-server/handlers/url/save"
 	mwLogger "github.com/aidos-dev/url-shortener/internal/http-server/middleware/logger"
 
 	"github.com/aidos-dev/url-shortener/internal/config"
@@ -49,6 +50,8 @@ func main() {
 	router.Use(mwLogger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
+
+	router.Post("/url", save.New(log, storage))
 
 	// run server
 }
