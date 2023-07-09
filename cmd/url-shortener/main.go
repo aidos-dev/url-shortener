@@ -29,9 +29,12 @@ func main() {
 	// init logger: slog
 	log := setupLogger(cfg.Env)
 
-	log.Info("starting url-shortener", slog.String("env", cfg.Env))
+	log.Info(
+		"starting url-shortener",
+		slog.String("env", cfg.Env),
+		slog.String("version", "123"),
+	)
 	log.Debug("debug messages are enabled")
-	log.Error("error messages are enabled")
 
 	// init storage: sqlite3
 	storage, err := sqlite.New(cfg.StoragePath)
@@ -53,6 +56,7 @@ func main() {
 	router.Use(middleware.URLFormat)
 
 	router.Post("/url", save.New(log, storage))
+	router.Get("/{alias}", redirect.New(log, storage))
 
 	// run server
 	log.Info("starting server", slog.String("address", cfg.Address))
