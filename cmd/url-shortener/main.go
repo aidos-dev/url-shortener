@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/aidos-dev/url-shortener/internal/http-server/handlers/redirect"
 	"github.com/aidos-dev/url-shortener/internal/http-server/handlers/url/save"
 	mwLogger "github.com/aidos-dev/url-shortener/internal/http-server/middleware/logger"
 
